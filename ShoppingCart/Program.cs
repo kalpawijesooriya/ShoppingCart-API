@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JwtConfig"));
 
 // Add connection string
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")?? "Data Source=ShoppingCart";
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")?? "Data Source=SalesDb";
 
 // Add a contect to services collection
 builder.Services.AddDbContext<ShoppingDBContext>(x => x.UseSqlServer(connectionString));
@@ -22,6 +22,7 @@ builder.Services.AddDbContext<ShoppingDBContext>(x => x.UseSqlServer(connectionS
 // Add services to the container.
 builder.Services.AddControllers();
 
+builder.Services.AddEndpointsApiExplorer();
 // Add auto mapper profiles to the container
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
