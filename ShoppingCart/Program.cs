@@ -10,6 +10,8 @@ using Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
+  string _MyCors = "MyCors";
+
 //Update the JWT config from the settings
 builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JwtConfig"));
 
@@ -21,6 +23,14 @@ builder.Services.AddDbContext<ShoppingDBContext>(x => x.UseSqlServer(connectionS
 
 // Add services to the container.
 builder.Services.AddControllers();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: _MyCors, builder =>
+    {
+        builder.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
+    });
+});
 
 builder.Services.AddEndpointsApiExplorer();
 // Add auto mapper profiles to the container
@@ -76,6 +86,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(_MyCors);
 
 app.UseAuthentication();
 
